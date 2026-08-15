@@ -1,0 +1,13 @@
+# dsh-theme-stardew — client plugin patch layer.
+#
+# This layer INSERTs the Stardew theme into the browser plugin roster. After
+# `dsh plugin --profile web add <this-package>`, the web profile mounts the
+# plugin's client half (`dsh-theme-stardew/client` → lib/client.js) alongside
+# the shipped web features.
+#
+# The row is a `dsh.client` row (the browser roster the modules node half scans
+# into window.__DSH_BOOT__), enabling the theme's settings toggle + CSS.
+
+- insert:
+    - id: theme-stardew
+      name: 'dsh-theme-stardew'

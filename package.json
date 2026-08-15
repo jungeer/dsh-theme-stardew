@@ -1,0 +1,46 @@
+{
+  "name": "dsh-theme-stardew",
+  "version": "0.1.0",
+  "description": "A Stardew Valley themed client plugin for the DeepSeek Harness web surface. Non-commercial fan theme.",
+  "license": "MIT",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "immediately": true
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./styles/*": "./lib/styles/*",
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "src",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "bundle": "tsdown",
+    "build": "tsdown && node scripts/copy-styles.mjs"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1"
+  }
+}

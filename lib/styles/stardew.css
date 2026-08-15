@@ -1,0 +1,717 @@
+/* Stardew Valley theme for the DSH interface — warm farmhouse design.
+ *
+ * Palette (design brief):
+ *   - parchment background #F5E6C8, wood borders #C4956A
+ *   - signature pumpkin-orange buttons #D96C06
+ *   - deep-brown text #5D4037
+ * Everything is scoped under `html[data-sd-stardew]`: with the attribute
+ * absent (Settings → General → 主题风格 → 默认) this sheet is inert and the
+ * page renders exactly as shipped. The attribute is managed by the ui-theme
+ * client plugin, which persists the choice in localStorage (default ON).
+ *
+ * Official-site assets used as accents:
+ *   - stardew-logo.png  the site's main logo (bottom-right watermark)
+ *   - stardew-grass.png the site's grass tile (top/bottom edge strips)
+ *   - stardew-scene.png a site screenshot (farm window at the sidebar top)
+ *   - stardew-crop-*.png item sprites (tiny crop row by the watermark)
+ */
+
+/* Pixel titles + warm rounded serif body; degrades gracefully when offline. */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Serif+SC:wght@400;600&display=swap');
+
+html[data-sd-stardew] {
+  --dsw-font-family: 'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
+}
+
+/* Titles in Press Start 2P (Latin/digits pixel; Chinese falls back to serif). */
+html[data-sd-stardew] :where(h1, h2, h3) {
+  font-family: 'Press Start 2P', 'Noto Serif SC', 'Songti SC', serif;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0 rgba(139, 90, 43, 0.18);
+}
+
+/* ── farmhouse palette ────────────────────────────────────────────────────── */
+
+html[data-sd-stardew] body {
+  /* parchment */
+  --sd-parchment-0: #fdf6e3;
+  --sd-parchment-1: #fbf0d7;
+  --sd-parchment-2: #f5e6c8;
+  --sd-parchment-3: #eed9b0;
+  --sd-parchment-4: #e7d0a5;
+  /* wood */
+  --sd-wood-3: #c4956a;
+  --sd-wood-4: #a9713f;
+  --sd-wood-5: #8b5a2b;
+  --sd-wood-6: #6b4226;
+  --sd-wood-7: #4a2c16;
+  /* pumpkin orange */
+  --sd-orange: #d96c06;
+  --sd-orange-hover: #f07c14;
+  --sd-orange-deep: #b85c05;
+  /* ink */
+  --sd-ink: #5d4037;
+  --sd-ink-2: #7a5c47;
+  --sd-ink-3: #97745b;
+  --sd-ink-4: #b8a180;
+  /* accents */
+  --sd-gold: #f2c94c;
+  --sd-gold-deep: #d9a017;
+  --sd-green: #5a8f3c;
+  --sd-green-light: #86ac52;
+  --sd-red: #c0392b;
+  --sd-sky: #4a90c2;
+
+  /* night (dark scheme) — warm wood-brown, not blue */
+  --sd-night-bg: #2e2014;
+  --sd-night-1: #3a2a1b;
+  --sd-night-2: #453220;
+  --sd-night-3: #523c27;
+  --sd-night-ink: #f5e6c8;
+  --sd-night-ink-2: #d8c39a;
+  --sd-night-ink-3: #b39b77;
+
+  /* base is solid warm parchment; a gentle texture rides on body::before. */
+  --dsw-alias-bg-base: #f5e6c8;
+}
+
+/* Gentle wood-grain streaks + soft vignette over the parchment base. */
+html[data-sd-stardew] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse at center, transparent 62%, rgba(107, 66, 38, 0.1) 100%),
+    repeating-linear-gradient(90deg,
+      transparent 0 64px, rgba(139, 90, 43, 0.035) 64px 66px, transparent 66px 130px);
+  background-size: cover, 130px 100%;
+  background-repeat: no-repeat, repeat-x;
+}
+
+/* ── chat area: the game scene as the visual centerpiece ────────────────────
+ * The center (conversation) column shows an official screenshot, veiled with
+ * a translucent parchment layer so text stays readable. The conversation
+ * content sits above the veil; the scene stays fixed while messages scroll. */
+html[data-sd-stardew] [class*='centerCol'] {
+  position: relative;
+}
+
+html[data-sd-stardew] [class*='centerCol']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(245, 230, 200, 0.5), rgba(245, 230, 200, 0.5)),
+    url('./stardew-scene.png');
+  background-size: cover, cover;
+  background-attachment: fixed, fixed;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  filter: blur(1.5px);
+  transform: scale(1.02);
+}
+
+/* Official logo + a tiny crop row, bottom-right of the chat area (watermark). */
+html[data-sd-stardew] [class*='centerCol']::after {
+  content: '';
+  position: absolute;
+  right: 18px;
+  bottom: 150px;
+  width: 300px;
+  height: 120px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  image-rendering: pixelated;
+  background-image:
+    url('./stardew-logo.png'),
+    url('./stardew-crop-stardrop.png'),
+    url('./stardew-crop-wheat.png'),
+    url('./stardew-crop-melon.png'),
+    url('./stardew-crop-cauliflower.png'),
+    url('./stardew-crop-blueberry.png');
+  background-size: 200px auto, 20px auto, 20px auto, 20px auto, 20px auto, 20px auto;
+  background-position:
+    right 0 top 0,
+    right 24px bottom 0,
+    right 0 bottom 0,
+    left 150px bottom 0,
+    left 124px bottom 0,
+    left 98px bottom 0;
+  background-repeat: no-repeat;
+}
+
+/* Conversation content above the scene veil. */
+html[data-sd-stardew] [class*='centerCol'] > * {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+}
+
+/* ── chat bubbles ─────────────────────────────────────────────────────────── */
+
+/* User bubble: pumpkin-orange + cream text, right-aligned, square-ish corner
+ * and a pixel arrow on its right edge. */
+html[data-sd-stardew] [data-chat-flow-kind='user'] {
+  position: relative;
+  align-self: flex-end;
+  max-width: 86%;
+  background: var(--sd-orange);
+  color: #fff7e8;
+  border: 2px solid var(--sd-wood-6);
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 3px 3px 0 var(--sd-wood-6);
+}
+
+html[data-sd-stardew] [data-chat-flow-kind='user']::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  bottom: 14px;
+  border: 6px solid transparent;
+  border-left-color: var(--sd-orange);
+  border-right: none;
+}
+
+/* Assistant bubble: parchment letter card + ink text, left-aligned. */
+html[data-sd-stardew] [data-chat-flow-kind='assistant'] {
+  position: relative;
+  align-self: flex-start;
+  max-width: 96%;
+  background: #fffbf0;
+  color: var(--sd-ink);
+  border: 2px solid var(--sd-wood-3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 3px 3px 0 rgba(139, 90, 43, 0.35);
+}
+
+html[data-sd-stardew] [data-chat-flow-kind='assistant']::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  bottom: 14px;
+  border: 6px solid transparent;
+  border-right-color: #fffbf0;
+  border-left: none;
+}
+
+html[data-sd-stardew] [data-chat-flow-kind='assistant'] .flowItem,
+html[data-sd-stardew] [data-chat-flow-kind='assistant'] [data-chat-flow-kind] {
+  background: transparent;
+}
+
+/* Grass edge strips at the very top and bottom of the viewport (official
+ * grass tile) — a thin band of farm edge. */
+html[data-sd-stardew]::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.9;
+  background-image: url('./stardew-grass.png'), url('./stardew-grass.png');
+  background-repeat: repeat-x, repeat-x;
+  background-position: center top, center bottom;
+  background-size: auto 6px, auto 6px;
+}
+
+/* Stardew Valley logo sign at the top of the sidebar: the official wide logo
+ * framed in wood, with a grass lip — the top-left marker of the farm theme.
+ * The column becomes a flex stack so the sign keeps its fixed height and the
+ * slot content fills the rest. NOTE: the sidebar slot renders through a
+ * `display: contents` anchor (`[data-slot="sidebar"]`), so a plain `> *`
+ * height rule would hit the box-less anchor, never shrink the real sidebar
+ * root, and clip the settings foot out of view — the content rule addresses
+ * past the anchor instead. */
+html[data-sd-stardew] [class*='sidebarCol'] {
+  display: flex;
+  flex-direction: column;
+}
+
+html[data-sd-stardew] [class*='sidebarCol']::before {
+  content: '';
+  display: block;
+  flex: none;
+  height: 92px;
+  margin: 8px 8px 4px;
+  border: 3px solid var(--sd-wood-5);
+  border-radius: 6px;
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.25),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  image-rendering: pixelated;
+  background-color: var(--sd-green-light);
+  background-image:
+    url('./stardew-logo.png'),
+    repeating-linear-gradient(90deg, var(--sd-green) 0 10px, #52742c 10px 20px);
+  background-size: contain, auto 5px;
+  background-position: center, center bottom;
+  background-repeat: no-repeat, repeat-x;
+}
+
+/* The real sidebar root (child of the display:contents anchor) flexes into the
+ * space left below the logo sign; flex-basis 0 overrides its height:100% so
+ * the settings foot stays pinned at the viewport bottom. */
+html[data-sd-stardew] [class*='sidebarCol'] > [data-slot='sidebar'] > * {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+
+/* Collapsed rail: drop the logo sign; the content flexes to full height. */
+html[data-sd-stardew] [data-sidebar-collapsed] [class*='sidebarCol']::before {
+  display: none;
+}
+
+/* Wooden window-frame around the whole app. */
+html[data-sd-stardew] #root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 7px var(--sd-wood-4),
+    inset 0 0 0 9px rgba(255, 255, 255, 0.22),
+    inset 0 0 0 10px var(--sd-wood-6);
+}
+
+/* ── light palette: parchment farmhouse ───────────────────────────────────── */
+
+html[data-sd-stardew] body {
+  --dsw-alias-bg-layer-1: var(--sd-parchment-1);
+  --dsw-alias-bg-layer-2: var(--sd-parchment-2);
+  --dsw-alias-bg-layer-3: var(--sd-parchment-3);
+  --dsw-alias-bg-mask-1: rgba(74, 44, 22, 0.24);
+  --dsw-alias-bg-mask-2: rgba(74, 44, 22, 0.12);
+  --dsw-alias-bg-mask-3: rgba(74, 44, 22, 0.48);
+  --dsw-alias-bg-mask-drop: rgba(253, 246, 227, 0.7);
+  --dsw-alias-bg-mask-photo: rgba(40, 20, 5, 0.88);
+  --dsw-alias-bg-module-platform: var(--sd-parchment-3);
+  --dsw-alias-bg-multi-select: var(--sd-parchment-3);
+  --dsw-alias-bg-overlay: var(--sd-parchment-0);
+  --dsw-alias-bg-skeleton: rgba(139, 90, 43, 0.08);
+  --dsw-alias-border-inverted: rgba(0, 0, 0, 0);
+  --dsw-alias-border-inverted2: rgba(0, 0, 0, 0);
+  --dsw-alias-border-l1: rgba(139, 90, 43, 0.22);
+  --dsw-alias-border-l2-darkmode-thin: rgba(139, 90, 43, 0.3);
+  --dsw-alias-border-l2: rgba(139, 90, 43, 0.34);
+  --dsw-alias-border-l3: rgba(139, 90, 43, 0.46);
+  --dsw-alias-border-l4: rgba(139, 90, 43, 0.6);
+  --dsw-alias-brand-primary: var(--sd-orange);
+  --dsw-alias-brand-primary-invert: #fff7e8;
+  --dsw-alias-brand-primary-new-colorprimary-new-color: var(--sd-orange);
+  --dsw-alias-brand-text: var(--sd-ink);
+  --dsw-alias-button-contrast-fill: var(--sd-wood-6);
+  --dsw-alias-button-elevated-fill: var(--sd-parchment-0);
+  --dsw-alias-button-floating-fill: var(--sd-parchment-0);
+  --dsw-alias-button-floating-hover: var(--sd-parchment-1);
+  --dsw-alias-button-ghost-active-border: var(--sd-wood-4);
+  --dsw-alias-button-ghost-active-fill: var(--sd-parchment-3);
+  --dsw-alias-button-ghost-active-hover: var(--sd-parchment-1);
+  --dsw-alias-button-info-fill: var(--sd-sky);
+  --dsw-alias-button-info-hover: #6bb7e0;
+  --dsw-alias-button-primary-dimmed: var(--sd-orange-deep);
+  --dsw-alias-button-primary-fill: var(--sd-orange);
+  --dsw-alias-button-primary-hover: var(--sd-orange-hover);
+  --dsw-alias-button-tool-bar-fill-invisible: rgba(74, 44, 22, 0.28);
+  --dsw-alias-button-tool-bar-fill: rgba(74, 44, 22, 0.42);
+  --dsw-alias-button-tool-bar-hover: rgba(74, 44, 22, 0.52);
+  --dsw-alias-interactive-bg-active: rgba(217, 108, 6, 0.12);
+  --dsw-alias-interactive-bg-hover-accent: rgba(217, 108, 6, 0.16);
+  --dsw-alias-interactive-bg-hover-danger: rgba(192, 57, 43, 0.07);
+  --dsw-alias-interactive-bg-hover-solid: var(--sd-parchment-3);
+  --dsw-alias-interactive-bg-hover: rgba(139, 90, 43, 0.09);
+  --dsw-alias-label-caption: var(--sd-ink-3);
+  --dsw-alias-label-dimmed: var(--sd-ink-4);
+  --dsw-alias-label-primary-bluish: var(--sd-sky);
+  --dsw-alias-label-primary-dimmed: var(--sd-ink);
+  --dsw-alias-label-primary-foreground: #fff8ea;
+  --dsw-alias-label-primary-inverted: #fff8ea;
+  --dsw-alias-label-primary: var(--sd-ink);
+  --dsw-alias-label-secondary: var(--sd-ink-2);
+  --dsw-alias-label-tertiary: var(--sd-ink-3);
+  --dsw-alias-markdown-citation: var(--sd-parchment-4);
+  --dsw-alias-markdown-code-block-banner: var(--sd-parchment-4);
+  --dsw-alias-markdown-code-block: var(--sd-parchment-4);
+  --dsw-alias-markdown-code-segment-selected: var(--sd-parchment-0);
+  --dsw-alias-markdown-code-segment-unselected: var(--sd-parchment-3);
+  --dsw-alias-markdown-inline-code: var(--sd-parchment-4);
+  --dsw-alias-markdown-placeholder: var(--sd-parchment-3);
+  --dsw-alias-markdown-tag: var(--sd-parchment-3);
+  --dsw-alias-scrollbar-bg-l1: var(--sd-wood-3);
+  --dsw-alias-scrollbar-bg-l2: var(--sd-wood-3);
+  --dsw-alias-scrollbar-hover-l1: var(--sd-wood-4);
+  --dsw-alias-scrollbar-hover-l2: var(--sd-wood-4);
+  --dsw-alias-state-business-primary: var(--sd-sky);
+  --dsw-alias-state-business-tertiary: #dcecf6;
+  --dsw-alias-state-error-primary: var(--sd-red);
+  --dsw-alias-state-error-secondary: #e07070;
+  --dsw-alias-state-success-primary: var(--sd-green);
+  --dsw-alias-state-success-secondary: var(--sd-green-light);
+  --dsw-alias-state-success-tertiary: #dce8c0;
+  --dsw-alias-state-warn-label: var(--sd-gold-deep);
+  --dsw-alias-state-warn-primary: var(--sd-gold);
+  --dsw-alias-state-warn-secondary: #f7d97a;
+  --dsw-alias-state-warn-tertiary: #f5e9c2;
+  --dsw-alias-toast-bg: var(--sd-parchment-0);
+  --dsw-alias-tooltip-bg: var(--sd-wood-6);
+  --dsw-specific-input-major: var(--sd-parchment-0);
+  --dsw-specific-sidebar-fill: var(--sd-parchment-2);
+}
+
+/* ── dark palette: night farmhouse ────────────────────────────────────────── */
+
+html[data-sd-stardew] body[data-ds-dark-theme] {
+  --dsw-alias-bg-layer-1: var(--sd-night-1);
+  --dsw-alias-bg-layer-2: var(--sd-night-2);
+  --dsw-alias-bg-layer-3: var(--sd-night-3);
+  --dsw-alias-bg-mask-1: rgba(8, 6, 4, 0.32);
+  --dsw-alias-bg-mask-2: rgba(8, 6, 4, 0.16);
+  --dsw-alias-bg-mask-3: rgba(8, 6, 4, 0.6);
+  --dsw-alias-bg-mask-drop: rgba(46, 32, 20, 0.7);
+  --dsw-alias-bg-mask-photo: rgba(5, 4, 2, 0.9);
+  --dsw-alias-bg-module-platform: var(--sd-night-2);
+  --dsw-alias-bg-multi-select: var(--sd-night-2);
+  --dsw-alias-bg-overlay: var(--sd-night-1);
+  --dsw-alias-bg-skeleton: rgba(245, 230, 200, 0.05);
+  --dsw-alias-border-inverted: rgba(0, 0, 0, 0);
+  --dsw-alias-border-inverted2: rgba(0, 0, 0, 0);
+  --dsw-alias-border-l1: rgba(196, 149, 106, 0.16);
+  --dsw-alias-border-l2-darkmode-thin: rgba(196, 149, 106, 0.22);
+  --dsw-alias-border-l2: rgba(196, 149, 106, 0.24);
+  --dsw-alias-border-l3: rgba(196, 149, 106, 0.34);
+  --dsw-alias-border-l4: rgba(196, 149, 106, 0.45);
+  --dsw-alias-brand-primary: var(--sd-orange);
+  --dsw-alias-brand-primary-invert: var(--sd-night-bg);
+  --dsw-alias-brand-primary-new-colorprimary-new-color: var(--sd-orange-hover);
+  --dsw-alias-brand-text: var(--sd-night-ink);
+  --dsw-alias-button-contrast-fill: var(--sd-night-3);
+  --dsw-alias-button-elevated-fill: var(--sd-night-2);
+  --dsw-alias-button-floating-fill: var(--sd-night-2);
+  --dsw-alias-button-floating-hover: var(--sd-night-3);
+  --dsw-alias-button-ghost-active-border: #8a6a45;
+  --dsw-alias-button-ghost-active-fill: var(--sd-night-3);
+  --dsw-alias-button-ghost-active-hover: var(--sd-night-2);
+  --dsw-alias-button-info-fill: #3a6d96;
+  --dsw-alias-button-info-hover: var(--sd-sky);
+  --dsw-alias-button-primary-dimmed: var(--sd-orange-deep);
+  --dsw-alias-button-primary-fill: var(--sd-orange);
+  --dsw-alias-button-primary-hover: var(--sd-orange-hover);
+  --dsw-alias-button-tool-bar-fill-invisible: rgba(245, 230, 200, 0.28);
+  --dsw-alias-button-tool-bar-fill: rgba(245, 230, 200, 0.42);
+  --dsw-alias-button-tool-bar-hover: rgba(245, 230, 200, 0.52);
+  --dsw-alias-interactive-bg-active: rgba(217, 108, 6, 0.18);
+  --dsw-alias-interactive-bg-hover-accent: rgba(217, 108, 6, 0.22);
+  --dsw-alias-interactive-bg-hover-danger: rgba(224, 112, 112, 0.1);
+  --dsw-alias-interactive-bg-hover-solid: var(--sd-night-3);
+  --dsw-alias-interactive-bg-hover: rgba(245, 230, 200, 0.07);
+  --dsw-alias-label-caption: var(--sd-night-ink-3);
+  --dsw-alias-label-dimmed: #6a5438;
+  --dsw-alias-label-primary-bluish: #9ed4ef;
+  --dsw-alias-label-primary-dimmed: var(--sd-night-ink);
+  --dsw-alias-label-primary-foreground: #fff0dc;
+  --dsw-alias-label-primary-inverted: var(--sd-night-ink);
+  --dsw-alias-label-primary: var(--sd-night-ink);
+  --dsw-alias-label-secondary: var(--sd-night-ink-2);
+  --dsw-alias-label-tertiary: var(--sd-night-ink-3);
+  --dsw-alias-markdown-citation: var(--sd-night-3);
+  --dsw-alias-markdown-code-block-banner: #241a10;
+  --dsw-alias-markdown-code-block: #1f160d;
+  --dsw-alias-markdown-code-segment-selected: var(--sd-night-3);
+  --dsw-alias-markdown-code-segment-unselected: var(--sd-night-2);
+  --dsw-alias-markdown-inline-code: #241a10;
+  --dsw-alias-markdown-placeholder: var(--sd-night-2);
+  --dsw-alias-markdown-tag: var(--sd-night-3);
+  --dsw-alias-scrollbar-bg-l1: var(--sd-wood-6);
+  --dsw-alias-scrollbar-bg-l2: var(--sd-wood-6);
+  --dsw-alias-scrollbar-hover-l1: var(--sd-wood-3);
+  --dsw-alias-scrollbar-hover-l2: var(--sd-wood-3);
+  --dsw-alias-state-business-primary: var(--sd-sky);
+  --dsw-alias-state-business-tertiary: #22314a;
+  --dsw-alias-state-error-primary: #e07070;
+  --dsw-alias-state-error-secondary: var(--sd-red);
+  --dsw-alias-state-success-primary: var(--sd-green-light);
+  --dsw-alias-state-success-secondary: var(--sd-green);
+  --dsw-alias-state-success-tertiary: #2a3a20;
+  --dsw-alias-state-warn-label: var(--sd-gold);
+  --dsw-alias-state-warn-primary: var(--sd-gold);
+  --dsw-alias-state-warn-secondary: var(--sd-gold-deep);
+  --dsw-alias-state-warn-tertiary: #4a3b1a;
+  --dsw-alias-toast-bg: var(--sd-night-1);
+  --dsw-alias-tooltip-bg: var(--sd-wood-6);
+  --dsw-specific-input-major: var(--sd-night-1);
+  --dsw-specific-sidebar-fill: var(--sd-night-bg);
+}
+
+/* Warm dark assistant bubble. */
+html[data-sd-stardew] body[data-ds-dark-theme] [data-chat-flow-kind='assistant'] {
+  background: #3a2a1b;
+  color: #f5e6c8;
+  border-color: #c4956a;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+html[data-sd-stardew] body[data-ds-dark-theme] [data-chat-flow-kind='assistant']::before {
+  border-right-color: #3a2a1b;
+}
+
+/* ── scheme-independent pixel dressing ────────────────────────────────────── */
+
+/* Chunky farmhouse buttons: orange fill, wood border, hard shadow, press. */
+html[data-sd-stardew] :where(button, [role='button'], input, select, textarea) {
+  border-radius: 6px;
+}
+
+html[data-sd-stardew] :where(button, [role='button']) {
+  border: 2px solid var(--sd-wood-6);
+  box-shadow: 0 2px 0 var(--sd-wood-5);
+}
+
+html[data-sd-stardew] :where(button, [role='button']):active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 var(--sd-wood-5);
+}
+
+/* Inputs get a parchment card with a wood border. `background-color` (not the
+ * `background` shorthand) so native controls that draw their own chevron glyph
+ * (the composer's plan/model selects) keep their background-image. */
+html[data-sd-stardew] :where(input, select, textarea) {
+  border: 2px solid var(--sd-wood-3);
+  background-color: var(--sd-parchment-0);
+}
+
+html[data-sd-stardew] body[data-ds-dark-theme] :where(input, select, textarea) {
+  background-color: var(--sd-night-1);
+}
+
+/* The composer textarea is a transparent glyph layer over an identical
+ * backdrop div that paints the visible draft; the parchment fill above would
+ * cover that backdrop and leave the text invisible while typing. Restore its
+ * transparent layering and borderless geometry (the backdrop must share the
+ * same box metrics or the caret drifts from the glyphs). */
+html[data-sd-stardew] textarea[data-phase] {
+  border: none;
+  background-color: transparent;
+}
+
+/* Pixel-crisp raster images (avatars, item thumbnails). */
+html[data-sd-stardew] img {
+  image-rendering: pixelated;
+}
+
+/* Pumpkin-orange selection. */
+html[data-sd-stardew] ::selection {
+  background: rgba(217, 108, 6, 0.32);
+  color: var(--sd-ink);
+}
+
+html[data-sd-stardew] body[data-ds-dark-theme] ::selection {
+  color: var(--sd-night-ink);
+}
+
+/* Wooden scrollbar thumbs, square-cornered. */
+html[data-sd-stardew] ::-webkit-scrollbar-thumb {
+  border-radius: 0;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   DEEP STARDEW RESTYLE
+   Full pixel-game dressing on top of the farmhouse base above. Everything
+   stays scoped under `html[data-sd-stardew]`; the absent attribute leaves the
+   shipped look untouched.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── A. FULL PIXELATION ──────────────────────────────────────────────── */
+
+/* Pixel font on compact widget faces (Latin/digits; Chinese falls back to
+   the serif body). Buttons keep Press Start 2P for their short labels. */
+html[data-sd-stardew] :where(button, [role='button']) {
+  font-family: 'Press Start 2P', 'Noto Serif SC', 'Songti SC', serif;
+  letter-spacing: 0.5px;
+}
+
+/* Everything gets hard square corners + pixel borders. */
+html[data-sd-stardew] :where(button, [role='button'], input, select, textarea) {
+  border-radius: 3px;
+}
+
+/* Section headers / tabs / sidebar heads read as game-style headlines. */
+html[data-sd-stardew] :where([data-slot='sidebar.workspaces']) .css-(none),
+html[data-sd-stardew] [class*='sectionHeader'],
+html[data-sd-stardew] [class*='listTitle'],
+html[data-sd-stardew] [class*='groupLabel'],
+html[data-sd-stardew] [class*='tabList'] {
+  font-family: 'Press Start 2P', 'Noto Serif SC', 'Songti SC', serif;
+  letter-spacing: 0.5px;
+}
+
+/* Panels / cards get a chunky wood border + hard shadow (game inventory). */
+html[data-sd-stardew] [class*='card'],
+html[data-sd-stardew] [class*='panel'],
+html[data-sd-stardew] [data-composer-card],
+html[data-sd-stardew] [role='dialog'],
+html[data-sd-stardew] [class*='popover'],
+html[data-sd-stardew] [class*='menu'] {
+  border-radius: 6px !important;
+  box-shadow: 3px 3px 0 rgba(74, 44, 22, 0.35);
+}
+
+/* ── B. GAME-STYLE COMPONENTS ─────────────────────────────────────────── */
+
+/* Session rows as short wooden planks with a plank-grain border. */
+html[data-sd-stardew] [class*='sessionRow'],
+html[data-sd-stardew] [class*='sessionRow'][class*='selected'] {
+  border-radius: 4px;
+}
+html[data-sd-stardew] [class*='sessionRow'][class*='selected'] {
+  box-shadow:
+    0 0 0 2px var(--sd-gold),
+    0 2px 0 rgba(74, 44, 22, 0.4);
+}
+
+/* Gold active accent on toggle/option chips. */
+html[data-sd-stardew] [aria-pressed='true'] {
+  border-color: var(--sd-gold) !important;
+  box-shadow:
+    0 0 0 2px rgba(217, 151, 59, 0.35),
+    0 2px 0 var(--sd-wood-5);
+}
+
+/* ── C. RICH BACKGROUND ART ─────────────────────────────────────────────
+   Expand the chat scene with NPCs, a barn, crops, a dog and a bird along the
+   bottom edges. All layers paint on the existing fixed center-scene
+   pseudo-element (one paint surface, one backdrop). */
+
+/* Day scene: big centered logo + NPCs + barn + crops + dog along the bottom. */
+html[data-sd-stardew] [class*='centerCol']::before {
+  background-image:
+    url('./stardew-logo.png'),
+    linear-gradient(rgba(245, 230, 200, 0.45), rgba(245, 230, 200, 0.45)),
+    url('./stardew-scene.png'),
+    url('./stardew-shed.png'),
+    url('./stardew-npc-penny.png'),
+    url('./stardew-npc-emily.png'),
+    url('./stardew-npc-abigail.png'),
+    url('./stardew-dog.png'),
+    url('./stardew-crop-stardrop.png'),
+    url('./stardew-crop-cauliflower.png'),
+    url('./stardew-crop-melon.png'),
+    url('./stardew-crop-wheat.png'),
+    url('./stardew-crop-blueberry.png');
+  background-size:
+    32% auto, cover, cover,
+    128px auto, 52px auto, 52px auto, 52px auto,
+    34px auto, 22px auto, 22px auto, 22px auto, 22px auto, 22px auto;
+  background-position:
+    center 12%, center, center,
+    right 26px bottom 56px, left 30px bottom 56px, left 96px bottom 60px, right 150px bottom 60px,
+    left 40px bottom 40px, left 60px bottom 30px, left 118px bottom 32px, left 170px bottom 36px, left 84px bottom 26px, left 200px bottom 30px;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+/* Night scene: big centered logo + dark veil + night art + barn/NPC silhouettes. */
+html[data-sd-stardew] body[data-ds-dark-theme] [class*='centerCol']::before {
+  background-image:
+    url('./stardew-logo.png'),
+    linear-gradient(rgba(46, 32, 20, 0.55), rgba(46, 32, 20, 0.55)),
+    url('./stardew-scene-night.png'),
+    url('./stardew-shed.png'),
+    url('./stardew-npc-abigail.png'),
+    url('./stardew-npc-penny.png'),
+    url('./stardew-dog.png'),
+    url('./stardew-crop-stardrop.png'),
+    url('./stardew-crop-wheat.png');
+  background-size:
+    32% auto, cover, cover,
+    128px auto, 52px auto, 52px auto,
+    34px auto, 22px auto, 22px auto;
+  background-position:
+    center 12%, center, center,
+    right 26px bottom 56px, left 96px bottom 60px, right 150px bottom 60px,
+    left 40px bottom 40px, left 84px bottom 26px, left 118px bottom 32px;
+  background-repeat: no-repeat;
+  filter: brightness(0.92) blur(1.5px);
+  image-rendering: pixelated;
+}
+
+/* ── D. NIGHT FARMHOUSE ATMOSPHERE ────────────────────────────────────── */
+
+/* Warm lantern glow cast over the night chat — layered on the existing
+   `::after` (so the logo watermark keeps painting beneath it). */
+html[data-sd-stardew] body[data-ds-dark-theme] [class*='centerCol']::after {
+  box-shadow:
+    inset -120px -80px 120px -30px rgba(255, 190, 90, 0.18),
+    inset 120px 60px 160px -60px rgba(120, 60, 10, 0.28);
+}
+
+/* ── E. GAME-STYLE INPUT AREA ─────────────────────────────────────────── */
+
+/* The composer becomes a wooden inventory/lockbox: thick wood frame, brass
+   corner studs, parchment inset, hard drop shadow. */
+html[data-sd-stardew] [data-composer-card] {
+  border: 3px solid var(--sd-wood-6) !important;
+  background:
+    linear-gradient(180deg, var(--sd-parchment-1), var(--sd-parchment-2)) !important;
+  box-shadow:
+    inset 0 0 0 3px var(--sd-wood-4),
+    0 6px 0 rgba(74, 44, 22, 0.4);
+}
+
+html[data-sd-stardew] body[data-ds-dark-theme] [data-composer-card] {
+  background:
+    linear-gradient(180deg, var(--sd-night-1), var(--sd-night-2)) !important;
+  box-shadow:
+    inset 0 0 0 3px var(--sd-wood-6),
+    0 6px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Brass corner studs via layered radial dots in the card corners. */
+html[data-sd-stardew] [data-composer-card] {
+  background-image:
+    radial-gradient(circle at 6px 6px, var(--sd-gold) 0 3px, transparent 3.5px),
+    radial-gradient(circle at calc(100% - 6px) 6px, var(--sd-gold) 0 3px, transparent 3.5px),
+    radial-gradient(circle at 6px calc(100% - 6px), var(--sd-gold) 0 3px, transparent 3.5px),
+    radial-gradient(circle at calc(100% - 6px) calc(100% - 6px), var(--sd-gold) 0 3px, transparent 3.5px),
+    linear-gradient(180deg, var(--sd-parchment-1), var(--sd-parchment-2));
+}
+
+html[data-sd-stardew] body[data-ds-dark-theme] [data-composer-card] {
+  background-image:
+    radial-gradient(circle at 6px 6px, var(--sd-gold) 0 3px, transparent 3.5px),
+    radial-gradient(circle at calc(100% - 6px) 6px, var(--sd-gold) 0 3px, transparent 3.5px),
+    radial-gradient(circle at 6px calc(100% - 6px), var(--sd-gold) 0 3px, transparent 3.5px),
+    radial-gradient(circle at calc(100% - 6px) calc(100% - 6px), var(--sd-gold) 0 3px, transparent 3.5px),
+    linear-gradient(180deg, var(--sd-night-1), var(--sd-night-2));
+}
+
+/* Placeholder / hint line inside the box: ink in the light, parchment at night. */
+html[data-sd-stardew] [data-input-backdrop] [data-decoration='hint'] {
+  color: var(--sd-ink-3);
+}
+html[data-sd-stardew] body[data-ds-dark-theme] [data-input-backdrop] [data-decoration='hint'] {
+  color: var(--sd-night-ink-3);
+}
+
+/* Primary send + add buttons: pumpkin orange, wood border, hard press. */
+html[data-sd-stardew] [data-composer-card] :where(button),
+html[data-sd-stardew] [data-composer-card] [role='button'] {
+  font-family: 'Press Start 2P', 'Noto Serif SC', serif;
+  border: 2px solid var(--sd-wood-6);
+  box-shadow: 0 3px 0 var(--sd-wood-5);
+}
+html[data-sd-stardew] [data-composer-card] :where(button):active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 var(--sd-wood-5);
+}
+
+/* ── E. GAME-STYLE INPUT AREA stays above; hero text removed per request — */
+
