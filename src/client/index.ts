@@ -68,7 +68,7 @@ const injectTheme = (): void => {
 }
 
 /** Plugin object handed to the cordis loader for the browser half. */
-export const inject = ['locale']
+export const inject = ['slots', 'locale']
 
 export function apply(ctx: ClientContext & { locale: { register: (ns: string, dict: Record<string, unknown>) => void } }): void {
   // The theme sheet is gated on the attribute; inject it once at boot.
