@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 import { readFile } from 'node:fs/promises'
 import { transform } from 'lightningcss'
 import type { UserConfig } from 'tsdown'
-import { PLATFORM_MODULES } from '../web/src/platform.ts'
+import { PLATFORM_MODULES } from './platform-modules.ts'
 
 /**
  * Standalone build for dsh-theme-stardew. Emits ONLY the browser client bundle

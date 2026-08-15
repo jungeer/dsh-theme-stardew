@@ -178,32 +178,46 @@ html[data-sd-stardew] [data-chat-flow-kind='user']::after {
   border-right: none;
 }
 
-/* Assistant bubble: parchment letter card + ink text, left-aligned. */
-html[data-sd-stardew] [data-chat-flow-kind='assistant'] {
+/* Assistant bubble (day): parchment letter card + darker ink for farm-scene readability. */
+html[data-sd-stardew] body:not([data-ds-dark-theme]) [data-chat-flow-kind='assistant'] {
   position: relative;
   align-self: flex-start;
   max-width: 96%;
-  background: #fffbf0;
-  color: var(--sd-ink);
+  background: #fff8ea;
+  color: #3e2723;
   border: 2px solid var(--sd-wood-3);
   border-radius: 8px;
   padding: 12px 16px;
   box-shadow: 3px 3px 0 rgba(139, 90, 43, 0.35);
 }
 
-html[data-sd-stardew] [data-chat-flow-kind='assistant']::before {
+html[data-sd-stardew] body:not([data-ds-dark-theme]) [data-chat-flow-kind='assistant']::before {
   content: '';
   position: absolute;
   left: -12px;
   bottom: 14px;
   border: 6px solid transparent;
-  border-right-color: #fffbf0;
+  border-right-color: #fff8ea;
   border-left: none;
 }
 
 html[data-sd-stardew] [data-chat-flow-kind='assistant'] .flowItem,
 html[data-sd-stardew] [data-chat-flow-kind='assistant'] [data-chat-flow-kind] {
   background: transparent;
+  color: inherit;
+}
+
+/* Day-only: deepen chat copy. Must NOT apply under dark theme or night ink vanishes. */
+html[data-sd-stardew] body:not([data-ds-dark-theme]) [data-conversation-scroll],
+html[data-sd-stardew] body:not([data-ds-dark-theme]) [data-chat-flow-kind='assistant'],
+html[data-sd-stardew] body:not([data-ds-dark-theme]) [data-chat-flow-kind='assistant'] :where(p, li, span, code, pre, h1, h2, h3, h4, a) {
+  --dsw-alias-label-primary: #3e2723;
+  --dsw-alias-label-secondary: #4a2c16;
+  --dsw-alias-label-tertiary: #5d4037;
+  --dsw-alias-label-caption: #5d4037;
+}
+html[data-sd-stardew] body:not([data-ds-dark-theme]) [data-chat-flow-kind='assistant'] :where(p, li, span, td, th) {
+  color: #3e2723;
 }
 
 /* Grass edge strips at the very top and bottom of the viewport (official
@@ -329,15 +343,20 @@ html[data-sd-stardew] body {
   --dsw-alias-interactive-bg-hover-danger: rgba(192, 57, 43, 0.07);
   --dsw-alias-interactive-bg-hover-solid: var(--sd-parchment-3);
   --dsw-alias-interactive-bg-hover: rgba(139, 90, 43, 0.09);
-  --dsw-alias-label-caption: var(--sd-ink-3);
-  --dsw-alias-label-dimmed: var(--sd-ink-4);
+  /* Chat chrome (composer hint, todo strip, stats line): keep ink a step
+     darker than the parchment so day-mode captions stay readable. */
+  --dsw-alias-label-caption: var(--sd-ink-2);
+  --dsw-alias-label-dimmed: var(--sd-ink-3);
   --dsw-alias-label-primary-bluish: var(--sd-sky);
-  --dsw-alias-label-primary-dimmed: var(--sd-ink);
+  --dsw-alias-label-primary-dimmed: #3e2723;
   --dsw-alias-label-primary-foreground: #fff8ea;
   --dsw-alias-label-primary-inverted: #fff8ea;
-  --dsw-alias-label-primary: var(--sd-ink);
-  --dsw-alias-label-secondary: var(--sd-ink-2);
-  --dsw-alias-label-tertiary: var(--sd-ink-3);
+  --dsw-alias-label-primary: #3e2723;
+  --dsw-alias-label-secondary: #4a2c16;
+  --dsw-alias-label-tertiary: #5d4037;
+  --dsw-alias-separator-primary: var(--sd-ink-3);
+  /* Todo / tip strip above the composer — farmhouse wood, not platform blue. */
+  --dsw-specific-tip: var(--sd-parchment-3);
   --dsw-alias-markdown-citation: var(--sd-parchment-4);
   --dsw-alias-markdown-code-block-banner: var(--sd-parchment-4);
   --dsw-alias-markdown-code-block: var(--sd-parchment-4);
@@ -370,6 +389,7 @@ html[data-sd-stardew] body {
 /* ── dark palette: night farmhouse ────────────────────────────────────────── */
 
 html[data-sd-stardew] body[data-ds-dark-theme] {
+  --dsw-alias-bg-base: var(--sd-night-bg);
   --dsw-alias-bg-layer-1: var(--sd-night-1);
   --dsw-alias-bg-layer-2: var(--sd-night-2);
   --dsw-alias-bg-layer-3: var(--sd-night-3);
@@ -413,15 +433,20 @@ html[data-sd-stardew] body[data-ds-dark-theme] {
   --dsw-alias-interactive-bg-hover-danger: rgba(224, 112, 112, 0.1);
   --dsw-alias-interactive-bg-hover-solid: var(--sd-night-3);
   --dsw-alias-interactive-bg-hover: rgba(245, 230, 200, 0.07);
-  --dsw-alias-label-caption: var(--sd-night-ink-3);
-  --dsw-alias-label-dimmed: #6a5438;
+  /* Night chat chrome: one step brighter so captions/stats stay readable on
+     wood panels (composer, todo strip, stats line). */
+  --dsw-alias-label-caption: var(--sd-night-ink-2);
+  --dsw-alias-label-dimmed: var(--sd-night-ink-3);
   --dsw-alias-label-primary-bluish: #9ed4ef;
   --dsw-alias-label-primary-dimmed: var(--sd-night-ink);
   --dsw-alias-label-primary-foreground: #fff0dc;
-  --dsw-alias-label-primary-inverted: var(--sd-night-ink);
+  /* Knock-out ink for the HARNESS badge plate (plate uses currentColor = night ink). */
+  --dsw-alias-label-primary-inverted: var(--sd-night-bg);
   --dsw-alias-label-primary: var(--sd-night-ink);
-  --dsw-alias-label-secondary: var(--sd-night-ink-2);
-  --dsw-alias-label-tertiary: var(--sd-night-ink-3);
+  --dsw-alias-label-secondary: var(--sd-night-ink);
+  --dsw-alias-label-tertiary: var(--sd-night-ink-2);
+  --dsw-alias-separator-primary: var(--sd-night-ink-3);
+  --dsw-specific-tip: var(--sd-night-2);
   --dsw-alias-markdown-citation: var(--sd-night-3);
   --dsw-alias-markdown-code-block-banner: #241a10;
   --dsw-alias-markdown-code-block: #1f160d;
@@ -451,16 +476,39 @@ html[data-sd-stardew] body[data-ds-dark-theme] {
   --dsw-specific-sidebar-fill: var(--sd-night-bg);
 }
 
-/* Warm dark assistant bubble. */
+/* Warm dark assistant bubble + readable night copy. */
 html[data-sd-stardew] body[data-ds-dark-theme] [data-chat-flow-kind='assistant'] {
+  position: relative;
+  align-self: flex-start;
+  max-width: 96%;
   background: #3a2a1b;
   color: #f5e6c8;
-  border-color: #c4956a;
+  border: 2px solid #c4956a;
+  border-radius: 8px;
+  padding: 12px 16px;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
 }
 
 html[data-sd-stardew] body[data-ds-dark-theme] [data-chat-flow-kind='assistant']::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  bottom: 14px;
+  border: 6px solid transparent;
   border-right-color: #3a2a1b;
+  border-left: none;
+}
+
+html[data-sd-stardew] body[data-ds-dark-theme] [data-conversation-scroll],
+html[data-sd-stardew] body[data-ds-dark-theme] [data-chat-flow-kind='assistant'] {
+  --dsw-alias-label-primary: var(--sd-night-ink);
+  --dsw-alias-label-secondary: var(--sd-night-ink);
+  --dsw-alias-label-tertiary: var(--sd-night-ink-2);
+  --dsw-alias-label-caption: var(--sd-night-ink-2);
+}
+
+html[data-sd-stardew] body[data-ds-dark-theme] [data-chat-flow-kind='assistant'] :where(p, li, span, td, th, code, a, h1, h2, h3, h4) {
+  color: #f5e6c8;
 }
 
 /* ── scheme-independent pixel dressing ────────────────────────────────────── */
@@ -653,7 +701,23 @@ html[data-sd-stardew] body[data-ds-dark-theme] [class*='centerCol']::after {
     inset 120px 60px 160px -60px rgba(120, 60, 10, 0.28);
 }
 
-/* ── E. GAME-STYLE INPUT AREA ─────────────────────────────────────────── */
+/* Night: conversation column + composer fade band must not stay parchment. */
+html[data-sd-stardew] body[data-ds-dark-theme] [class*='centerCol'],
+html[data-sd-stardew] body[data-ds-dark-theme] [data-conversation-scroll],
+html[data-sd-stardew] body[data-ds-dark-theme] [class*='composerSeat'],
+html[data-sd-stardew] body[data-ds-dark-theme] [class*='composerStack'] {
+  --dsw-alias-bg-base: var(--sd-night-bg);
+  background-color: transparent;
+}
+
+html[data-sd-stardew] body[data-ds-dark-theme] [class*='composerSeat'] {
+  /* Seat paints a solid fade with bg-base; force night wood so the dock band matches. */
+  background: linear-gradient(
+    color-mix(in srgb, var(--sd-night-bg) 0%, transparent) 0px,
+    var(--sd-night-bg) 36px,
+    var(--sd-night-bg) 100%
+  ) !important;
+}
 
 /* The composer becomes a wooden inventory/lockbox: thick wood frame, brass
    corner studs, parchment inset, hard drop shadow. */
@@ -693,12 +757,77 @@ html[data-sd-stardew] body[data-ds-dark-theme] [data-composer-card] {
     linear-gradient(180deg, var(--sd-night-1), var(--sd-night-2));
 }
 
-/* Placeholder / hint line inside the box: ink in the light, parchment at night. */
-html[data-sd-stardew] [data-input-backdrop] [data-decoration='hint'] {
-  color: var(--sd-ink-3);
+/* Placeholder: native textarea::placeholder AND the backdrop hint span. */
+html[data-sd-stardew] [data-composer-card] textarea::placeholder,
+html[data-sd-stardew] [data-composer-card] textarea::-webkit-input-placeholder {
+  color: #3e2723 !important;
+  opacity: 1 !important;
 }
-html[data-sd-stardew] body[data-ds-dark-theme] [data-input-backdrop] [data-decoration='hint'] {
-  color: var(--sd-night-ink-3);
+html[data-sd-stardew] body[data-ds-dark-theme] [data-composer-card] textarea::placeholder,
+html[data-sd-stardew] body[data-ds-dark-theme] [data-composer-card] textarea::-webkit-input-placeholder {
+  color: #fff3d6 !important;
+  opacity: 1 !important;
+}
+
+html[data-sd-stardew] [data-input-backdrop] [data-decoration='hint'],
+html[data-sd-stardew] [data-composer-card] [data-decoration='hint'],
+html[data-sd-stardew] [data-composer-card] [class*='hint'] {
+  color: #3e2723 !important;
+  opacity: 1 !important;
+}
+html[data-sd-stardew] body[data-ds-dark-theme] [data-input-backdrop] [data-decoration='hint'],
+html[data-sd-stardew] body[data-ds-dark-theme] [data-composer-card] [data-decoration='hint'],
+html[data-sd-stardew] body[data-ds-dark-theme] [data-composer-card] [class*='hint'] {
+  color: #fff3d6 !important;
+  opacity: 1 !important;
+}
+
+/* Composer body + toolbar labels inherit readable ink (not washed caption). */
+html[data-sd-stardew] [data-composer-card] {
+  color: #3e2723 !important;
+}
+html[data-sd-stardew] body[data-ds-dark-theme] [data-composer-card] {
+  color: #fff3d6 !important;
+}
+html[data-sd-stardew] [data-composer-card] :where(button, [role='button'], select) {
+  color: #3e2723 !important;
+}
+html[data-sd-stardew] body[data-ds-dark-theme] [data-composer-card] :where(button, [role='button'], select) {
+  color: #fff3d6 !important;
+}
+
+/* Draft glyphs on the backdrop (typed text mirrors this). */
+html[data-sd-stardew] [data-input-backdrop] {
+  color: #3e2723 !important;
+}
+html[data-sd-stardew] body[data-ds-dark-theme] [data-input-backdrop] {
+  color: #fff3d6 !important;
+}
+
+/* Todo strip (“任务 N 已完成”) above the composer. */
+html[data-sd-stardew] [data-composer-card],
+html[data-sd-stardew] [class*='TodoPanel'] {
+  --dsw-alias-label-tertiary: #5d4037;
+  --dsw-alias-label-caption: #5d4037;
+  --dsw-alias-label-secondary: #4a2c16;
+}
+html[data-sd-stardew] body[data-ds-dark-theme] [data-composer-card],
+html[data-sd-stardew] body[data-ds-dark-theme] [class*='TodoPanel'] {
+  --dsw-alias-label-tertiary: #f0e0bc;
+  --dsw-alias-label-caption: #f0e0bc;
+  --dsw-alias-label-secondary: #fff3d6;
+}
+
+/* Session stats line under the chat (“N 轮 · N 步 | LLM …”). */
+html[data-sd-stardew] [class*='centerCol'] [class*='StatsLine'],
+html[data-sd-stardew] [class*='centerCol'] footer,
+html[data-sd-stardew] [class*='centerCol'] [class*='stats'] {
+  color: #5d4037 !important;
+}
+html[data-sd-stardew] body[data-ds-dark-theme] [class*='centerCol'] [class*='StatsLine'],
+html[data-sd-stardew] body[data-ds-dark-theme] [class*='centerCol'] footer,
+html[data-sd-stardew] body[data-ds-dark-theme] [class*='centerCol'] [class*='stats'] {
+  color: #f0e0bc !important;
 }
 
 /* Primary send + add buttons: pumpkin orange, wood border, hard press. */

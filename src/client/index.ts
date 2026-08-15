@@ -55,16 +55,18 @@ const persistStardew = (enabled: boolean): void => {
   try { localStorage.setItem(STARDEW_STORAGE_KEY, enabled ? 'on' : 'off') } catch { /* storage unavailable */ }
 }
 
-/** Inject the theme <style> once; the loader strips plugin-owned tags on unload. */
+/** Inject or refresh the theme <style>; always rewrite text so local rebuilds show up after reload. */
 const injectTheme = (): void => {
+  if (typeof document === 'undefined') return
   const key = `${PLUGIN_ID}/stardew.css`
-  if (typeof document !== 'undefined' && document.querySelector(`style[data-plugin-css="${key}"]`) === null) {
-    const tag = document.createElement('style')
+  let tag = document.querySelector(`style[data-plugin-css="${key}"]`) as HTMLStyleElement | null
+  if (tag === null) {
+    tag = document.createElement('style')
     tag.dataset.plugin = PLUGIN_ID
     tag.dataset.pluginCss = key
-    tag.textContent = STARDEW_CSS
     document.head.appendChild(tag)
   }
+  tag.textContent = STARDEW_CSS
 }
 
 /** Plugin object handed to the cordis loader for the browser half. */
