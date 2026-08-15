@@ -1,6 +1,6 @@
 {
   "name": "dsh-theme-stardew",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A Stardew Valley themed client plugin for the DeepSeek Harness web surface. Non-commercial fan theme.",
   "license": "MIT",
   "private": false,
@@ -34,6 +34,7 @@
     "src",
     "cordis.patch.yml",
     "README.md",
+    "README.en.md",
     "LICENSE"
   ],
   "scripts": {
