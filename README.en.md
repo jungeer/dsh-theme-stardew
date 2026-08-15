@@ -6,6 +6,16 @@ A **Stardew Valley themed client plugin** for the [DeepSeek Harness](https://git
 
 > ⚠️ **Asset notice** — this package bundles official Stardew Valley artwork (the logo, crop/NPC sprites, and in-game scene screenshots) for **personal / non-commercial fan use only**. All artwork is © ConcernedApe / Stardew Valley. If you plan to **distribute or publish this package, review whether redistribution of those assets is permitted before releasing**; consider omitting `src/styles/*.png|gif` and relying on code-drawn backgrounds if you cannot clear them.
 
+## Preview
+
+**Day**
+
+![Stardew theme · day](./docs/preview-day.jpg)
+
+**Night** (Settings → General → Appearance **Dark** + Theme style **星露谷**)
+
+![Stardew theme · night](./docs/preview-night.jpg)
+
 ## What it does
 
 - Injects the full Stardew stylesheet (all images base64-inlined, self-contained) at runtime — no shell `base.css` changes needed.
@@ -23,7 +33,7 @@ dsh plugin --profile web add dsh-theme-stardew
 
 # or direct from a git repo / tarball
 dsh plugin --profile web add <owner>/dsh-theme-stardew
-dsh plugin --profile web add ./dsh-theme-stardew-0.1.3.tgz
+dsh plugin --profile web add ./dsh-theme-stardew-0.1.6.tgz
 ```
 
 If a regional npm mirror is behind, install from the official registry:
@@ -32,7 +42,7 @@ If a regional npm mirror is behind, install from the official registry:
 pnpm add dsh-theme-stardew@latest --registry https://registry.npmjs.org/
 ```
 
-Then start the web surface and open **Settings → General → 主题风格 → 星露谷** (or set `localStorage['dsh.ui-stardew.enabled'] = 'on'`).
+Then start the web surface and open **Settings → General → 主题风格 → 星露谷** (or set `localStorage['dsh.ui-stardew.enabled'] = 'on'`). Light / Dark appearance maps to the day / night farm scenes.
 
 > The theme defaults **OFF** in this standalone plugin (opt-in; unlike the shipped ui-theme which defaults ON).
 
@@ -52,6 +62,9 @@ and ensure `dsh-theme-stardew` is resolvable where dsh runs.
 
 ```
 dsh-theme-stardew/
+├─ docs/
+│  ├─ preview-day.jpg    # README day preview
+│  └─ preview-night.jpg  # README night preview
 ├─ lib/
 │  ├─ client.js          # browser plugin bundle (window.__ModuleLoader__.load)
 │  ├─ index.js           # node-half empty apply (required by Host Cordis)

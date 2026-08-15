@@ -6,9 +6,19 @@
 
 > ⚠️ **素材说明** — 本包内含官方星露谷美术资源（Logo、作物/NPC 精灵图、游戏内场景截图），仅供 **个人 / 非商业同人** 使用。全部美术 © ConcernedApe / Stardew Valley。若计划 **分发或公开发布本包，请先自行确认是否允许再分发这些素材**；无法确认时，可考虑去掉 `src/styles/*.png|gif`，只保留代码绘制背景。
 
+## 预览
+
+**白天**
+
+![星露谷主题 · 白天](./docs/preview-day.jpg)
+
+**黑夜**（设置 → 通用 → 外观「深色」+ 主题风格「星露谷」）
+
+![星露谷主题 · 黑夜](./docs/preview-night.jpg)
+
 ## 功能
 
-- 运行时注入完整星露谷样式表（图片全部 base64 内联，自包含），无需改 shell 的 `base.css`
+- 运行时注入完整星露谷样式表（图片全部 base64 内联、自包含），无需改 shell 的 `base.css`
 - 通过文档属性 `data-sd-stardew`（`html[data-sd-stardew]`）开关主题
 - 在 **设置 → 通用 → 主题风格** 增加 **星露谷 / 默认** 切换行，状态写入 `localStorage['dsh.ui-stardew.enabled']`
 - 只改视觉，不影响原有聊天功能
@@ -23,7 +33,7 @@ dsh plugin --profile web add dsh-theme-stardew
 
 # 或从 git / 本地 tarball
 dsh plugin --profile web add <owner>/dsh-theme-stardew
-dsh plugin --profile web add ./dsh-theme-stardew-0.1.3.tgz
+dsh plugin --profile web add ./dsh-theme-stardew-0.1.6.tgz
 ```
 
 若国内镜像尚未同步到最新版，可指定官方源：
@@ -32,7 +42,7 @@ dsh plugin --profile web add ./dsh-theme-stardew-0.1.3.tgz
 pnpm add dsh-theme-stardew@latest --registry https://registry.npmjs.org/
 ```
 
-然后启动 Web，打开 **设置 → 通用 → 主题风格 → 星露谷**（或设置 `localStorage['dsh.ui-stardew.enabled'] = 'on'`）。
+然后启动 Web，打开 **设置 → 通用 → 主题风格 → 星露谷**（或设置 `localStorage['dsh.ui-stardew.enabled'] = 'on'`）。外观里的「浅色 / 深色」会分别对应白天 / 黑夜农场场景。
 
 > 本独立插件默认 **关闭**（需手动开启；与自带 ui-theme 默认开启不同）。
 
@@ -52,6 +62,9 @@ pnpm add dsh-theme-stardew@latest --registry https://registry.npmjs.org/
 
 ```
 dsh-theme-stardew/
+├─ docs/
+│  ├─ preview-day.jpg    # README 白天预览
+│  └─ preview-night.jpg  # README 黑夜预览
 ├─ lib/
 │  ├─ client.js          # 浏览器插件包 (window.__ModuleLoader__.load)
 │  ├─ index.js           # Node 半边空 apply（Host Cordis 需要）
